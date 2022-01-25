@@ -1,0 +1,53 @@
+﻿@page
+@using RazorPagesPizza.Models
+@model RazorPagesPizza.Pages.ItemListModel
+@{
+    ViewData["Title"] = "Item List";
+}
+
+<h1>Item List</h1>
+<form method="post" class="card p-3">
+    <div class="row">
+        <div asp-validation-summary="All"></div>
+    </div>
+    <div class="form-group mb-0 align-middle">
+        <label asp-for="NewItem.Name">Name</label>
+        <input type="text" asp-for="NewItem.Name" class="mr-5">
+        <label asp-for="NewItem.Category">Category</label>
+        <input type="text" asp-for="NewItem.Category" class="mr-5">
+        <label asp-for="NewItem.Size">Size</label>
+        <select asp-for="NewItem.Size" asp-items="Html.GetEnumSelectList<PizzaSize>()" class="mr-5"></select>
+        <label asp-for="NewItem.Price"></label>
+        <input asp-for="NewItem.Price" class="mr-5" />
+        <button class="btn btn-primary">Add</button>
+    </div>
+</form>
+<table class="table mt-5">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Price</th>
+            <th scope="col">Size</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.items)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Category</td>
+            <td>@($"{item.Price:C}")</td>
+            <td>@item.Size</td>
+            <td>
+                <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}
